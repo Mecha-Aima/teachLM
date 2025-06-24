@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-interface CompanionCardProps {
+interface TeacherCardProps {
     id: string;
     name: string;
     topic: string;
@@ -11,7 +11,7 @@ interface CompanionCardProps {
     color: string;
 }
 
-const CompanionCard = ({id, name, topic, subject, duration, color}: CompanionCardProps) => {
+const TeacherCard = ({id, name, topic, subject, duration, color}: TeacherCardProps) => {
     return (
         <article className="companion-card" style={{backgroundColor: color}}>
             <div className="flex justify-between items-center">
@@ -38,4 +38,4 @@ const CompanionCard = ({id, name, topic, subject, duration, color}: CompanionCar
     )
 }
 
-export default CompanionCard
+export default TeacherCard

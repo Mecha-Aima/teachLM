@@ -3,6 +3,8 @@
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { createTeacher } from "@/lib/actions/teacher.actions"
+import { redirect } from "next/navigation"
 
 import {
     Form,
@@ -36,7 +38,7 @@ const formSchema = z.object({
   duration: z.coerce.number().min(1, {message: 'Duration is required.'}),
 })
 
-const CompanionForm = () => {
+const TeacherForm = () => {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -51,8 +53,16 @@ const CompanionForm = () => {
     })
     
     // 2. Define a submit handler.
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values)
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const teacher = await createTeacher(values);
+
+        if (teacher) {
+          redirect(`/teachers/${teacher.id}`);
+        }
+        else {
+          console.log('Failed to create teacher');
+          redirect('/');
+        }
     }
 
 
@@ -113,7 +123,7 @@ const CompanionForm = () => {
               name="topic"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>What should the companion help with?</FormLabel>
+                  <FormLabel>What should the teacher help with?</FormLabel>
                   <FormControl>
                     <Textarea placeholder="Ex. Supervised Learning" {...field} 
                         className="input text-sm"
@@ -207,4 +217,4 @@ const CompanionForm = () => {
       )
 }
 
-export default CompanionForm
+export default TeacherForm

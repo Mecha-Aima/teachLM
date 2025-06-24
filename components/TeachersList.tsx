@@ -11,14 +11,14 @@ import { cn, getSubjectColor } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 
-interface CompanionsListProps {
+interface TeachersListProps {
     title: string;
-    teachers?: Companion[];
+    teachers?: Teacher[];
     classNames: string;
 
 }
 
-const CompanionsList = ({ title, teachers, classNames }: CompanionsListProps) => {
+const TeachersList = ({ title, teachers, classNames }: TeachersListProps) => {
     return (
         <article className={cn('companion-list', classNames)}>
             <h2 className="font-bold text-3xl">{title}</h2>
@@ -78,4 +78,4 @@ const CompanionsList = ({ title, teachers, classNames }: CompanionsListProps) =>
     )
 }
 
-export default CompanionsList
+export default TeachersList
