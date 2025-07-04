@@ -5,6 +5,7 @@ import soundwaves from '@/constants/soundwaves.json';
 import { vapi } from "@/lib/vapi.sdk"
 import { cn, configureAssistant, getSubjectColor } from "@/lib/utils";
 import Image from "next/image";
+import { addToSessionHistory } from "@/lib/actions/teacher.actions";
 
 enum CallStatus {
     INACTIVE = "INACTIVE",
@@ -18,6 +19,7 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
     const [isSpeaking, setIsSpeaking] = useState(false);
     const lottieRef = useRef<LottieRefCurrentProps>(null);
     const [isMuted, setIsMuted] = useState(false);
+    const [messages, setMessages] = useState<SavedMessage[]>([]);
     
     useEffect(() => {
         if(lottieRef) {
@@ -29,9 +31,15 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
     useEffect(() => {
         const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
         const onMessage = (message: Message) => {
-            
+            if(message.type === 'transcript' && message.transcriptType === 'final') {
+                const newMessage = { role: message.role, content: message.transcript };
+                setMessages((prev) => [newMessage, ...prev]);
+            }
         }
-        const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+        const onCallEnd = () => {
+            setCallStatus(CallStatus.FINISHED)
+            addToSessionHistory(teacherId);
+        };
         const onError = (error: Error) => console.log('Error', error);
         const onSpeechStart = () => setIsSpeaking(true);
         const onSpeechEnd = () => setIsSpeaking(false);
@@ -116,9 +124,9 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
                         <Image src={userImage} alt={userName} width={130} height={130} className="rounded-lg"/>
                         <p className="text-xl font-bold">{userName}</p>
                     </div>
-                    <button className="btn-mic" onClick={toggleMicrophone}>
-                        <Image src={isMuted? '/icons/mic-off.svg' : '/icons/mic-on.svg'} alt='mic' width={28} height={28}/>
-                        <p className="max-sm:hidden">
+                    <button className="btn-mic" onClick={toggleMicrophone} disabled={callStatus !== CallStatus.ACTIVE}>
+                        <Image src={isMuted? '/icons/mic-off.svg' : '/icons/mic-on.svg'} alt='mic' width={28} height={28} className="disabled:opacity-30"/>
+                        <p className="max-sm:hidden disabled:opacity-30">
                             {isMuted ? 'Turn on your mic' : 'Turn off your mic'}
                         </p>
                     </button>
@@ -134,7 +142,21 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
             </section>
             <section className="transcript">
                 <div className="transcript-message no-scrollbar">
-                    MESSAGES
+                    {messages.map((message, index) => {
+                        if(message.role === 'assistant') {
+                            return (
+                                <p key={index} className="max-sm:text-s text-sm">
+                                    {name.split(' ')[0].replace('/[.,]/g', '')}: {message.content}
+                                </p>
+                            )
+                        } else {
+                            return (
+                                <p key={index} className="text-primary max-sm:text-sm text-sm">
+                                    {userName}: {message.content}
+                                </p>
+                            )
+                        }
+                    })}
                 </div>
                 <div className="transcript-fade"/>
             </section>

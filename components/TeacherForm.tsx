@@ -28,7 +28,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { subjects } from "@/constants"
 
 
-
 const formSchema = z.object({
   name: z.string().min(1, {message: 'Teacher name is required.'}),
   subject: z.string().min(1, {message: 'Subject is required.'}),
@@ -60,7 +59,8 @@ const TeacherForm = () => {
           redirect(`/teachers/${teacher.id}`);
         }
         else {
-          console.log('Failed to create teacher');
+          console.log('Failed to create tutor');
+          alert('Failed to create tutor');
           redirect('/');
         }
     }
@@ -74,9 +74,9 @@ const TeacherForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Teacher Name</FormLabel>
+                  <FormLabel>Tutor Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter teacher name" {...field} 
+                    <Input placeholder="Enter tutor name" {...field} 
                         className="input"
                     />
                   </FormControl>
@@ -123,7 +123,7 @@ const TeacherForm = () => {
               name="topic"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>What should the teacher help with?</FormLabel>
+                  <FormLabel>What should the tutor help with?</FormLabel>
                   <FormControl>
                     <Textarea placeholder="Ex. Supervised Learning" {...field} 
                         className="input text-sm"
@@ -199,7 +199,7 @@ const TeacherForm = () => {
               name="duration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Estimated Session Duration in minutes</FormLabel>
+                  <FormLabel>Estimated Session Duration in Minutes</FormLabel>
                   <FormControl>
                     <Input type="number" placeholder="15" {...field} 
                         className="input"
@@ -211,7 +211,7 @@ const TeacherForm = () => {
             />
 
 
-            <Button type="submit" className="w-full cursor-pointer">Build Teacher</Button>
+            <Button type="submit" className="w-full cursor-pointer">Build Tutor</Button>
           </form>
         </Form>
       )

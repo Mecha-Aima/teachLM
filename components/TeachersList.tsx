@@ -34,17 +34,29 @@ const TeachersList = ({ title, teachers, classNames }: TeachersListProps) => {
                 <TableBody>
                     {teachers?.map(({id, subject, name, topic, duration}) => (
                         <TableRow key={id}>
-                           <TableCell>
+                           <TableCell className="w-[70%] max-w-[0] overflow-hidden">
                             <Link href={`/teachers/${id}`}>
-                                <div className="flex items-cente gap-2">
-                                    <div className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden" style={{backgroundColor: getSubjectColor(subject) }}>
+                                <div className="flex items-center gap-3">
+                                    <div
+                                        className="flex items-center justify-center rounded-lg max-md:hidden"
+                                        style={{
+                                            backgroundColor: getSubjectColor(subject),
+                                            width: '72px',
+                                            height: '72px',
+                                            minWidth: '72px',
+                                            minHeight: '72px',
+                                            maxWidth: '72px',
+                                            maxHeight: '72px',
+                                            flex: '0 0 72px'
+                                        }}
+                                    >
                                         <Image src={`/icons/${subject}.svg`} alt={subject} width={24} height={24}/>
                                     </div>
-                                    <div className="flex flex-col gap-2">
-                                        <p className="font-bold text-2xl">
+                                    <div className="flex flex-col gap-1.5  min-w-0">
+                                        <p className="font-bold text-xl truncate">
                                             {name}
                                         </p>
-                                        <p className="text-lg">
+                                        <p className="text-md break-words whitespace-normal" style={{wordBreak: 'break-word'}}>
                                             {topic}
                                         </p>
                                     </div>

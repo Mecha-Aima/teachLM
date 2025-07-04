@@ -2,6 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
+import { create } from "domain";
 
 export const createTeacher = async (formData: CreateTeacher) => {
     const { userId: author } = await auth();
@@ -51,4 +52,73 @@ export const getTeacher = async (id: string) => {
     if (error) return console.log(error);
 
     return data[0];
+}
+
+export const addToSessionHistory = async (teacherId: string) => {
+    const { userId } = await auth();
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.from('session_history').insert({
+        teacher_id: teacherId,
+        user_id: userId,
+    })
+
+    if (error) throw new Error(error.message);
+    return data;
+}
+
+export const getRecentSessions = async (limit = 10) => {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+        .from('session_history')
+        .select(`teachers:teacher_id(*)`)
+        .order('created_at', { ascending: false})
+        .limit(limit);
+
+    if (error) throw new Error(error.message);
+
+    return data.map(({ teachers }) => teachers);
+}
+
+export const getUserSessions = async (userId: string, limit = 10) => {
+    // 
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+        .from('session_history')
+        .select(`teachers:teacher_id(*)`)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false})
+        .limit(limit);
+
+    if (error) throw new Error(error.message);
+
+    return data.map(({ teachers }) => teachers);
+}
+
+export const getUserTeachers = async (userId: string) => {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.from('teachers').select('*').eq('author', userId);
+    if (error) throw new Error(error.message);
+
+    return data;
+}
+
+export const newTeacherLimits = async () => {
+    const { userId, has } = await auth();
+    
+    let limit = 0;
+    if (has({plan: 'pro_learner'})) {
+        return true;
+    } else if (has({ feature: '10_active_teachers'})) {
+        limit = 10;
+    } else if (has({ feature: '3_active_teachers'})) {
+        limit = 3;
+    }
+
+    const client = createSupabaseClient();
+    const { data, error } = await client.from('teachers').select('id').eq('author', userId);
+    if (error) throw new Error(error.message);
+
+    const teacherCount = data.length;
+    return teacherCount < limit;
+
 }

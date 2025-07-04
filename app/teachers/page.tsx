@@ -16,14 +16,14 @@ const TeachersLibrary = async({searchParams}: SearchParams) => {
     
     return (
         <main>
-            <section className="flex justify-between gap-4 max-sm:flex-col">
+            <section className="flex justify-between gap-8 max-sm:flex-col">
                 <h1>Teacher Library</h1>
                 <div className="flex gap-4">
                     <SearchInput />
                     <SubjectFilter />
                 </div>
             </section>
-            <section className="companion-grid">
+            <section className="companions-grid mt-8">
                 {teachers.map((teacher) => (
                     <TeacherCard
                         key={teacher.id}
