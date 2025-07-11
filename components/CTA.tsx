@@ -4,18 +4,23 @@ import Link from "next/link"
 const CTA = () => {
     return (
         <section className="cta-section">
-            <div className="cta-badge">Start learning your way.</div>
-            <h2 className="text-2xl font-bold">
+            <div className="cta-badge">Start learning your way</div>
+            <div className="flex flex-col gap-2 items-center">
+            <h2 className="text-2xl font-bold text-white mb-2">
                 Build and Personalize AI Teachers
             </h2>
-            <p>Pick a name, subject, voice, & personality - and start learning through voice conversations that feel natural and fun.</p>
-            <Image src="/images/cta.svg" alt="cta" width={360} height={230} />
-            <button className="btn-primary">
-                <Image src="/icons/plus.svg" alt="plus" width={12} height={12} />
-                <Link href="/teachers/new">
+            <p className="text-white/90 leading-relaxed max-w-sm">Pick a name, subject, voice, & personality. Start learning through voice conversations that feel natural and fun.</p>
+            </div>
+            
+            <div className="my-4">
+                <Image src="/images/cta-2.svg" alt="cta" width={360} height={230} />
+            </div>
+            <Link href="/teachers/new" className="w-full">
+                <button className="btn-primary text-white w-full justify-center">
+                    <Image src="/icons/plus.svg" alt="plus" width={16} height={16} />
                     <span>Create New Teacher</span>
-                </Link>
-            </button>
+                </button>
+            </Link>
         </section>
     )
 }

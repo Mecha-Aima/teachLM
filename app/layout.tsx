@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque } from "next/font/google";
+import { Space_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { ClerkProvider } from '@clerk/nextjs'
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  
+});
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -21,9 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bricolage.variable} antialiased`}>
+      <body className={`${spaceMono.variable} ${inter.variable} antialiased`}>
         <ClerkProvider appearance={{
-          variables: { colorPrimary: '#fe5933'}
+          variables: { colorPrimary: '#4361ee'}
         }}>
           <NavBar />
           {children}

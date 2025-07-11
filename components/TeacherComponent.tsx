@@ -132,8 +132,8 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
                     </button>
                     <button 
                         className={cn(
-                            'rounded-lg cursor-pointer py-2 transition-colors w-full text-white', 
-                            callStatus === CallStatus.ACTIVE ? 'bg-red-700': 'bg-primary', 
+                            'rounded-lg cursor-pointer py-2 transition-colors w-full text-white btn-primary', 
+                            callStatus === CallStatus.ACTIVE ? 'bg-red-700': '', 
                             callStatus === CallStatus.CONNECTING && 'animate-pulse')}
                         onClick={callStatus === CallStatus.ACTIVE ? handleDisconnect : handleConnect}>
                         { callStatus === CallStatus.ACTIVE ? 'End Session' : callStatus === CallStatus.CONNECTING ? 'Connecting...' : 'Start Session'}

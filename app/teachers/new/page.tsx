@@ -12,23 +12,33 @@ const NewTeacher = async () => {
     const canCreate = await newTeacherLimits();
 
     return (
-        <main className="min-lg:w-1/3 min-md:w-2/3 items-center justify-center">
+        <main className="min-lg:w-1/2 min-md:w-2/3 items-center justify-center">
             {canCreate ? (
-                <article>
-                    <h1>Tutor Builder</h1>
+                <article className="space-y-8">
+                    <div className="text-center mb-12">
+                        <h1 className="mb-4">Tutor Builder</h1>
+                        <div className="w-24 h-1 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full mx-auto"></div>
+                        <p className="text-gray-600 mt-6 text-lg max-w-2xl mx-auto leading-relaxed">
+                            Create your personalized AI teacher with custom personality, voice, and expertise. 
+                            Build engaging learning experiences tailored to your needs.
+                        </p>
+                    </div>
                     <TeacherForm />
                 </article>) :
             (
-                <article className="companion-limit">
-                    <Image src="/images/limit.svg" alt="Teacher limit reached" width={360} height={240} />
-                    <div className="cta-badge">Upgrade your plan</div>
-                    <h1>You've reached your limit</h1>
-                    <p>You've reached your tutor limit. Upgrade to create more tutors and access premium features</p>
-                    <Link href="/subscription" className="btn-primary w-full justify-center">
-                        Upgrade my plan
-                    </Link>
+                <article className="companion-limit mb-16">
+                    <div className="bg-white rounded-3xl shadow-xl p-12 border border-gray-100 text-center max-w-md mx-auto">
+                        <Image src="/images/limit.svg" alt="Teacher limit reached" width={360} height={240} className="mx-auto mb-8" />
+                        <div className="cta-badge mb-6">Upgrade your plan</div>
+                        <h1 className="mb-6 text-3xl">You've reached your limit</h1>
+                        <p className="text-gray-600 leading-relaxed mb-8">
+                            You've reached your tutor limit. Upgrade to create more tutors and access premium features
+                        </p>
+                        <Link href="/subscription" className="btn-primary w-full justify-center">
+                            Upgrade my plan
+                        </Link>
+                    </div>
                 </article>
-                
         )}
         </main>
     )

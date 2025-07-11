@@ -122,3 +122,56 @@ export const newTeacherLimits = async () => {
     return teacherCount < limit;
 
 }
+
+export const addBookmark = async (teacherId: string) => {
+    console.log('CALLED ADD BOOKMARK');
+    const { userId } = await auth();
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.from('user_bookmarks').insert({
+        user_id: userId,
+        teacher_id: teacherId
+    })
+
+    if (error) throw new Error(error.message);
+
+    return data;
+}
+
+export const removeBookmark = async (teacherId: string) => {
+    console.log('CALLED REMOVE BOOKMARK');
+    const { userId } = await auth();
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.from('user_bookmarks').delete()
+        .eq('user_id', userId)
+        .eq('teacher_id', teacherId);
+
+    if (error) throw new Error(error.message);
+
+    return data;
+}
+
+export const getUserBookmarks = async (): Promise<Teacher[]> => {
+    const { userId } = await auth();
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.from('user_bookmarks')
+        .select('teachers:teacher_id(*)')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false});
+
+    if (error) throw new Error(error.message);
+
+    return data.map(({ teachers }) => teachers);
+}
+
+export const isBookmarked = async (teacherId: string) => {
+    console.log('CALLED ISBOOKMARKED');
+    const { userId } = await auth();
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase.from('user_bookmarks').select('*')
+        .eq('user_id', userId)
+        .eq('teacher_id', teacherId);
+
+    if (error) throw new Error(error.message);
+
+    return data.length > 0;
+}

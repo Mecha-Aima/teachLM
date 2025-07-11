@@ -5,16 +5,17 @@ import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@cl
 
 const NavBar = () => {
     return (
-        <nav className="navbar">
+        <nav className="navbar sticky top-0 z-50">
             <Link href="/">
-                <div className="flex items-center gap-2.5 cursor-pointer">
+                <div className="flex items-center gap-3 cursor-pointer group">
                     <Image 
                         src="/images/logo.svg" 
                         alt="teachLM" 
                         width={46} 
-                        height={44} 
+                        height={44}
+                        className="transition-transform group-hover:scale-105"
                     />
-                    <h1 className="text-2xl font-bold">teachLM</h1>
+                    <h1 className="text-3xl font-bold text-gradient">teachLM</h1>
                 </div>
             </Link>
             <div className="flex items-center gap-8">
