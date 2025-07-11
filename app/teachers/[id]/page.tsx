@@ -1,8 +1,8 @@
 import TeacherComponent from "@/components/TeacherComponent";
 import { getTeacher } from "@/lib/actions/teacher.actions"
-import { getSubjectColor } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { getSubjectColor } from "@/lib/utils";
 import Image from "next/image";
 
 interface TeacherSessionProps {
@@ -31,7 +31,7 @@ const TeacherSession = async ({ params }: TeacherSessionProps) => {
                             <p className="font-bold text-2xl">
                                 {teacher.name}
                             </p>
-                            <div className="subject-badge max-sm:hidden">
+                            <div className="subject-badge max-sm:hidden" style={{ background: getSubjectColor(teacher.subject)}}>
                                 {teacher.subject}
                             </div>
                         </div>

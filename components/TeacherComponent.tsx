@@ -121,7 +121,7 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
                 </div>
                 <div className="user-section">
                     <div className="user-avatar">
-                        <Image src={userImage} alt={userName} width={130} height={130} className="rounded-lg"/>
+                        <Image src={userImage} alt={userName || 'user'} width={130} height={130} className="rounded-lg"/>
                         <p className="text-xl font-bold">{userName}</p>
                     </div>
                     <button className="btn-mic" onClick={toggleMicrophone} disabled={callStatus !== CallStatus.ACTIVE}>
@@ -133,7 +133,7 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
                     <button 
                         className={cn(
                             'rounded-lg cursor-pointer py-2 transition-colors w-full text-white btn-primary', 
-                            callStatus === CallStatus.ACTIVE ? 'bg-red-700': '', 
+                            callStatus === CallStatus.ACTIVE ? 'bg-red-700 !important': '', 
                             callStatus === CallStatus.CONNECTING && 'animate-pulse')}
                         onClick={callStatus === CallStatus.ACTIVE ? handleDisconnect : handleConnect}>
                         { callStatus === CallStatus.ACTIVE ? 'End Session' : callStatus === CallStatus.CONNECTING ? 'Connecting...' : 'Start Session'}

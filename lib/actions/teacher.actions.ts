@@ -76,7 +76,18 @@ export const getRecentSessions = async (limit = 10) => {
 
     if (error) throw new Error(error.message);
 
-    return data.map(({ teachers }) => teachers);
+    // Remove duplicate teachers by id, keeping only the first occurrence (most recent)
+    const seen = new Set();
+    const uniqueTeachers = [];
+    for (const { teachers } of data) {
+        // If teachers is an array, use teachers[0], else use teachers
+        const teacherObj = Array.isArray(teachers) ? teachers[0] : teachers;
+        if (teacherObj && !seen.has(teacherObj.id)) {
+            seen.add(teacherObj.id);
+            uniqueTeachers.push(teacherObj);
+        }
+    }
+    return uniqueTeachers;
 }
 
 export const getUserSessions = async (userId: string, limit = 10) => {
@@ -91,7 +102,17 @@ export const getUserSessions = async (userId: string, limit = 10) => {
 
     if (error) throw new Error(error.message);
 
-    return data.map(({ teachers }) => teachers);
+    // Remove duplicate teachers by id, keeping only the first occurrence (most recent)
+    const seen = new Set();
+    const uniqueTeachers = [];
+    for (const { teachers } of data) {
+        const teacherObj = Array.isArray(teachers) ? teachers[0] : teachers;
+        if (teacherObj && !seen.has(teacherObj.id)) {
+            seen.add(teacherObj.id);
+            uniqueTeachers.push(teacherObj);
+        }
+    }
+    return uniqueTeachers;
 }
 
 export const getUserTeachers = async (userId: string) => {

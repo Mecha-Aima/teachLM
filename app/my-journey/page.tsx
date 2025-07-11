@@ -54,7 +54,7 @@ const Profile = async () => {
                         <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-3xl font-bold text-green-600">
+                                    <p className="text-3xl font-bold text-indigo-700">
                                         {sessionHistory.length}
                                     </p>
                                     <p className="text-sm text-gray-600 mt-1">Sessions completed</p>

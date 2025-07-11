@@ -14,7 +14,6 @@ interface TeachersListProps {
     title: string;
     teachers?: Teacher[];
     classNames: string;
-
 }
 
 const TeachersList = ({ title, teachers, classNames }: TeachersListProps) => {
