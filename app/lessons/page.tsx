@@ -88,7 +88,7 @@ const LessonsPage = async () => {
                           <input type="hidden" name="lessonId" value={lesson.id} />
                           <button 
                             type="submit"
-                            className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
+                            className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors cursor-pointer"
                             title={`Delete lesson: ${lesson.title}`}
                           >
                             <Image 
