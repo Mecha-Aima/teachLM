@@ -71,6 +71,22 @@ interface SavedMessage {
   content: string;
 }
 
+interface Lesson {
+  id: number;
+  title: string;
+  user_id: string;
+  teacher_id: string;
+  messages: SavedMessage[];
+  created_at: string;
+  // Joined teacher data (will be fetched separately or joined)
+  teacher?: {
+    id: string;
+    name: string;
+    subject: string;
+    topic: string;
+  };
+}
+
 interface TeacherComponentProps {
   teacherId: string;
   subject: string;

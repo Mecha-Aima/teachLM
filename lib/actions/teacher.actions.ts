@@ -143,7 +143,14 @@ export const newTeacherLimits = async () => {
 
     const teacherCount = data.length;
     return teacherCount < limit;
+}
 
+export const isSubscribed = async () => {
+    const { userId, has } = await auth();
+    if (has({plan: 'pro_learner'}) || has({plan: 'core_learner'})) {
+        return true;
+    }
+    return false;
 }
 
 export const addBookmark = async (teacherId: string) => {

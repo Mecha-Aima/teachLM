@@ -1,11 +1,12 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
-import soundwaves from '@/constants/soundwaves.json';
+import soundwaves from '@/constants/waves2.json';
 import { vapi } from "@/lib/vapi.sdk"
 import { cn, configureAssistant, getSubjectColor } from "@/lib/utils";
 import Image from "next/image";
 import { addToSessionHistory } from "@/lib/actions/teacher.actions";
+import { createLesson } from "@/lib/actions/lesson.actions";
 
 enum CallStatus {
     INACTIVE = "INACTIVE",
@@ -20,6 +21,7 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
     const lottieRef = useRef<LottieRefCurrentProps>(null);
     const [isMuted, setIsMuted] = useState(false);
     const [messages, setMessages] = useState<SavedMessage[]>([]);
+    const messagesRef = useRef<SavedMessage[]>([]);
     
     useEffect(() => {
         if(lottieRef) {
@@ -33,12 +35,25 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
         const onMessage = (message: Message) => {
             if(message.type === 'transcript' && message.transcriptType === 'final') {
                 const newMessage = { role: message.role, content: message.transcript };
-                setMessages((prev) => [newMessage, ...prev]);
+                setMessages((prev) => {
+                    const updatedMessages = [newMessage, ...prev];
+                    messagesRef.current = updatedMessages; // Keep ref in sync
+                    return updatedMessages;
+                });
             }
+            console.log(message);
         }
         const onCallEnd = () => {
             setCallStatus(CallStatus.FINISHED)
             addToSessionHistory(teacherId);
+            // Use the ref to get the current messages
+            createLesson({
+                teacherId: teacherId,
+                subject: subject,
+                topic: topic,
+                teacherName: name,
+                messages: messagesRef.current,
+            });
         };
         const onError = (error: Error) => console.log('Error', error);
         const onSpeechStart = () => setIsSpeaking(true);
@@ -119,6 +134,7 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
                     </div>
                     <p className="font-bold text-xl">{name}</p>
                 </div>
+                
                 <div className="user-section">
                     <div className="user-avatar">
                         <Image src={userImage} alt={userName || 'user'} width={130} height={130} className="rounded-lg"/>
@@ -145,13 +161,13 @@ const TeacherComponent = ({ teacherId, subject, topic, name, userName, userImage
                     {messages.map((message, index) => {
                         if(message.role === 'assistant') {
                             return (
-                                <p key={index} className="max-sm:text-s text-sm">
-                                    {name.split(' ')[0].replace('/[.,]/g', '')}: {message.content}
+                                <p key={index} className="max-sm:text-s text-md">
+                                    Tutor: {message.content}
                                 </p>
                             )
                         } else {
                             return (
-                                <p key={index} className="text-primary max-sm:text-sm text-sm">
+                                <p key={index} className="text-primary max-sm:text-sm text-md">
                                     {userName}: {message.content}
                                 </p>
                             )
